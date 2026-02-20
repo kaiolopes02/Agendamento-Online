@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Agende seu corte ou barba na Barber Shop Online"/>
+  <title>✂️ Barber Shop - Agendamento Online</title>
+  <link rel="stylesheet" href="css1/main.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>✂️ Barber Shop</h1>
+      <p class="subtitle">Agende seu horário em segundos</p>
+    </header>
+
+    <section class="card info-card" aria-labelledby="info-title">
+      <h2 id="info-title">Preços & Horários</h2>
+      <ul class="info-list">
+        <li><strong>Corte:</strong> R$ 35</li>
+        <li><strong>Barba:</strong> R$ 25</li>
+        <li><strong>Combo:</strong> R$ 50</li>
+        <li><strong>Funcionamento:</strong> Seg-Sáb: 09:00 - 19:00</li>
+        <li><strong>Almoço:</strong> 12:00 - 13:00 (fechado)</li>
+      </ul>
+    </section>
+
+    <form id="form-agendamento" class="booking-form" novalidate>
+      <div class="form-group">
+        <label for="nome">Nome completo *</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" required minlength="3" />
+        <span class="error-msg" id="erro-nome"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="servico">Serviço *</label>
+        <select id="servico" name="servico" required>
+          <option value="">Selecione...</option>
+          <option value="Corte">Corte - R$ 35</option>
+          <option value="Barba">Barba - R$ 25</option>
+          <option value="Combo">Combo - R$ 50</option>
+        </select>
+        <span class="error-msg" id="erro-servico"></span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="data">Data *</label>
+          <input type="date" id="data" name="data" required />
+          <span class="error-msg" id="erro-data"></span>
+        </div>
+        <div class="form-group">
+          <label for="hora">Horário *</label>
+          <input type="time" id="hora" name="hora" min="09:00" max="18:30" step="1800" required />
+          <span class="error-msg" id="erro-hora"></span>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-enviar" class="btn-primary">
+        <span class="btn-text">Confirmar Agendamento</span>
+        <span class="btn-loader hidden">⏳ Agendando...</span>
+      </button>
+      
+      <div id="form-feedback" class="feedback hidden" role="alert"></div>
+    </form>
+
+    <footer class="footer-info">
+      <p>Para cancelar ou reagendar:</p>
+      <a href="https://wa.me/5511914330750" target="_blank" rel="noopener" class="whatsapp-link">
+        💬 (11) 91433-0750
+      </a>
+    </footer>
+  </main>
+
+  <script type="module" src="js1/main.js"></script>
+</body>
+</html>
