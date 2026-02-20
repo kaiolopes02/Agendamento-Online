@@ -1,7 +1,7 @@
 export const CONFIG = {
   API: {
     // ✅ URL limpa, sem espaços no final
-    URL: "https://script.google.com/macros/s/AKfycbz1WyJF7xshtNARetx__uZ6enPXXWS3i9k0BkbscvUMZNrzEOqk9E9WQSms0OYPhQEJ/exec".trim(),
+    URL: "https://script.google.com/macros/s/AKfycby6LL_09VnY1wvUVLDEg3ICnchIXgPufRwErFoK1n2Cubp8LryTIRIRzaIKbg2C_465/exec".trim(),
     TIMEOUT: 15000 // 15 segundos
   },
   

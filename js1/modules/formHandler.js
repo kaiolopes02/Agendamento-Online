@@ -20,7 +20,7 @@ export const FormHandler = {
       hora: document.getElementById('hora').value
     };
 
-    // Validações locais
+    // Validações locais (Frontend)
     const validation = Validator.validateForm(dados);
     if (!validation.isValid) {
       Object.entries(validation.errors).forEach(([field, msg]) => {
@@ -34,14 +34,15 @@ export const FormHandler = {
     UI.setLoading(true);
 
     try {
-      // Verifica disponibilidade
+      // 🔹 CORREÇÃO: Verifica disponibilidade usando a chave correta vinda da API
       const ocupados = await API.fetchOccupiedSlots();
       const jaExiste = ocupados.some(
-        o => o.data === dados.data && o.hora === dados.hora
+        o => o.dataFormatada === dados.data && o.hora === dados.hora
       );
 
       if (jaExiste) {
         UI.showFeedback("⚠️ Horário já reservado! Escolha outro.", "error");
+        UI.setLoading(false);
         return;
       }
 
@@ -51,9 +52,8 @@ export const FormHandler = {
       UI.showFeedback("✅ Agendado com sucesso! 🎉", "success");
       UI.resetForm(e.target);
       
-    } catch (err) {
-      console.error('Erro no agendamento:', err);
-      UI.showFeedback(`❌ ${err.message || "Erro de conexão. Tente novamente."}`, "error");
+    } catch (error) {
+      UI.showFeedback(`❌ Erro: ${error.message}`, "error");
     } finally {
       UI.setLoading(false);
     }
