@@ -1,3 +1,7 @@
+// ✅ Certifique-se de importar CONFIG e DateTimeUtils
+import { CONFIG } from '../config/constants.js';
+import { DateTimeUtils } from '../utils/datetime.js';
+
 export const UI = {
   elements: {
     btn: null,
