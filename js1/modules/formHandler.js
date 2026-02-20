@@ -1,10 +1,12 @@
-// ✅ Adicione estes imports no TOPO do arquivo
+import { CONFIG } from '../config/constants.js';
 import { UI } from './ui.js';
 import { Validator } from '../utils/validation.js';
 import { API } from '../utils/api.js';
-import { CONFIG } from '../config/constants.js';
 
 export const FormHandler = {
+  /**
+   * Handler principal do submit
+   */
   async handleSubmit(e) {
     e.preventDefault();
     
@@ -18,6 +20,7 @@ export const FormHandler = {
       hora: document.getElementById('hora').value
     };
 
+    // Validações locais
     const validation = Validator.validateForm(dados);
     if (!validation.isValid) {
       Object.entries(validation.errors).forEach(([field, msg]) => {
@@ -31,6 +34,7 @@ export const FormHandler = {
     UI.setLoading(true);
 
     try {
+      // Verifica disponibilidade
       const ocupados = await API.fetchOccupiedSlots();
       const jaExiste = ocupados.some(
         o => o.data === dados.data && o.hora === dados.hora
@@ -41,11 +45,14 @@ export const FormHandler = {
         return;
       }
 
+      // Confirma agendamento
       await API.sendBooking(dados);
+      
       UI.showFeedback("✅ Agendado com sucesso! 🎉", "success");
       UI.resetForm(e.target);
       
     } catch (err) {
+      console.error('Erro no agendamento:', err);
       UI.showFeedback(`❌ ${err.message || "Erro de conexão. Tente novamente."}`, "error");
     } finally {
       UI.setLoading(false);

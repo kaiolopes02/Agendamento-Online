@@ -1,4 +1,3 @@
-// ✅ Certifique-se de importar CONFIG e DateTimeUtils
 import { CONFIG } from '../config/constants.js';
 import { DateTimeUtils } from '../utils/datetime.js';
 
@@ -10,6 +9,9 @@ export const UI = {
     feedback: null
   },
 
+  /**
+   * Inicializa elementos da UI
+   */
   init() {
     this.elements.btn = document.querySelector(CONFIG.SELECTORES.BTN_ENVIAR);
     this.elements.btnText = this.elements.btn?.querySelector('.btn-text');
@@ -24,6 +26,9 @@ export const UI = {
     }
   },
 
+  /**
+   * Alterna estado de loading do botão
+   */
   setLoading(loading) {
     if (!this.elements.btn) return;
     
@@ -32,6 +37,9 @@ export const UI = {
     this.elements.btnLoader?.classList.toggle('hidden', !loading);
   },
 
+  /**
+   * Exibe mensagem de feedback
+   */
   showFeedback(message, type = 'success') {
     if (!this.elements.feedback) return;
     
@@ -39,7 +47,6 @@ export const UI = {
     this.elements.feedback.className = `feedback ${type}`;
     this.elements.feedback.classList.remove('hidden');
     
-    // Auto-hide após 5s para success
     if (type === 'success') {
       setTimeout(() => {
         this.elements.feedback.classList.add('hidden');
@@ -47,19 +54,31 @@ export const UI = {
     }
   },
 
+  /**
+   * Limpa feedback
+   */
   clearFeedback() {
     this.elements.feedback?.classList.add('hidden');
   },
 
+  /**
+   * Exibe erro em campo específico
+   */
   showFieldError(fieldId, message) {
     const errorEl = document.getElementById(`erro-${fieldId}`);
     if (errorEl) errorEl.textContent = message;
   },
 
+  /**
+   * Limpa todos os erros
+   */
   clearErrors() {
     document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
   },
 
+  /**
+   * Reseta formulário
+   */
   resetForm(form) {
     form?.reset();
     this.clearErrors();

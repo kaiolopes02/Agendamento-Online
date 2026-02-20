@@ -1,15 +1,9 @@
 import { CONFIG } from './config/constants.js';
-import { DateTimeUtils } from './utils/datetime.js';
-import { Validator } from './utils/validation.js';
-import { API } from './utils/api.js';
 import { UI } from './modules/ui.js';
 import { FormHandler } from './modules/formHandler.js';
+import { DateTimeUtils } from './utils/datetime.js';
 
-// Expor globalmente para módulos que precisam (opcional)
-globalThis.CONFIG = CONFIG;
-globalThis.DateTimeUtils = DateTimeUtils;
-
-// Inicialização
+// Inicialização quando DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
   UI.init();
   
@@ -18,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => FormHandler.handleSubmit(e));
   }
   
-  // Melhora UX: atualiza horário disponível ao mudar data
+  // UX: desabilita horário se domingo for selecionado
   const inputDate = document.getElementById('data');
   const inputTime = document.getElementById('hora');
   
@@ -32,4 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
       UI.showFieldError('data', '');
     }
   });
+  
+  console.log('✅ Barber Shop App inicializado!');
 });
