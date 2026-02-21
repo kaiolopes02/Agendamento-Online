@@ -1,15 +1,11 @@
-import { CONFIG } from '../config/constants.js';
 import { UI } from './ui.js';
-import { Validator } from '../utils/validation.js';
 import { API } from '../utils/api.js';
+import { DateTimeUtils } from '../utils/datetime.js';
+import { Validator } from '../utils/validation.js';
 
 export const FormHandler = {
-  /**
-   * Handler principal do submit
-   */
   async handleSubmit(e) {
     e.preventDefault();
-    
     UI.clearErrors();
     UI.clearFeedback();
 
@@ -20,40 +16,32 @@ export const FormHandler = {
       hora: document.getElementById('hora').value
     };
 
-    // Validações locais (Frontend)
     const validation = Validator.validateForm(dados);
     if (!validation.isValid) {
-      Object.entries(validation.errors).forEach(([field, msg]) => {
-        UI.showFieldError(field, msg);
-      });
-      const firstError = Object.keys(validation.errors)[0];
-      document.getElementById(firstError)?.focus();
+      Object.entries(validation.errors).forEach(([field, msg]) => UI.showFieldError(field, msg));
       return;
     }
 
     UI.setLoading(true);
 
     try {
-      // 🔹 CORREÇÃO: Verifica disponibilidade usando a chave correta vinda da API
       const ocupados = await API.fetchOccupiedSlots();
-      const jaExiste = ocupados.some(
-        o => o.dataFormatada === dados.data && o.hora === dados.hora
+      
+      const conflito = ocupados.find(o => 
+        o.dataFormatada === dados.data && DateTimeUtils.isTooClose(o.hora, dados.hora)
       );
 
-      if (jaExiste) {
-        UI.showFeedback("⚠️ Horário já reservado! Escolha outro.", "error");
+      if (conflito) {
+        UI.showFeedback(`⚠️ Já existe um cliente agendado às ${conflito.hora}. Escolha outro horário com intervalo de 30 minutos no mínimo.`, "error");
         UI.setLoading(false);
         return;
       }
 
-      // Confirma agendamento
       await API.sendBooking(dados);
-      
-      UI.showFeedback("✅ Agendado com sucesso! 🎉", "success");
+      UI.showFeedback("✅ Agendamento realizado com sucesso!", "success");
       UI.resetForm(e.target);
-      
     } catch (error) {
-      UI.showFeedback(`❌ Erro: ${error.message}`, "error");
+      UI.showFeedback("❌ Erro ao conectar com o servidor.", "error");
     } finally {
       UI.setLoading(false);
     }

@@ -35,7 +35,7 @@ export const UI = {
     this.elements.feedback.classList.remove('hidden');
     
     if (type === 'success') {
-      setTimeout(() => this.elements.feedback.classList.add('hidden'), 5000);
+      setTimeout(() => this.elements.feedback?.classList.add('hidden'), 5000);
     }
   },
 
@@ -45,20 +45,17 @@ export const UI = {
 
   showFieldError(fieldId, message) {
     const errorEl = document.getElementById(`erro-${fieldId}`);
-    if (errorEl) {
-      errorEl.textContent = message;
-    }
+    if (errorEl) errorEl.textContent = message;
   },
 
   clearErrors() {
-    // 🔹 CORREÇÃO: Garante a limpeza de todos os spans de erro
     document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
   },
 
   resetForm(form) {
     if (form) {
       form.reset();
-      this.init(); // Reinicializa data mínima
+      this.init();
     }
     this.clearErrors();
   }
